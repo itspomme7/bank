@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>银行卡备忘录</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Helvetica Neue", sans-serif;
+      background: url('bank.jpg') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    /* 密码框样式 */
+    .password-container {
+      width: 100%;
+      max-width: 400px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(15px);
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      text-align: center;
+    }
+    .password-title {
+      color: #5b3e31;
+      margin-bottom: 20px;
+    }
+    .password-input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #f1b885;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+    .submit-btn {
+      background: #f1b885;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      color: #8a4c2c;
+      transition: 0.2s;
+    }
+    .submit-btn:hover {
+      background: #e6a670;
+    }
+    .error-msg {
+      color: #d9534f;
+      font-size: 14px;
+      margin-top: 10px;
+      display: none;
+    }
+    /* 内容容器（默认隐藏） */
+    .content-container {
+      width: 100%;
+      max-width: 700px;
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(15px);
+      padding: 24px;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      display: none;
+    }
+    /* 原始样式保持不变 */
+    h1 {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #5b3e31;
+    }
+    .bank {
+      margin-bottom: 20px;
+      padding: 18px;
+      background: rgba(255,255,255,0.75);
+      border-radius: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .bank-title {
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 12px;
+      color: #8a4c2c;
+    }
+    .card-block {
+      margin-bottom: 14px;
+    }
+    .usage {
+      font-size: 12px;
+      background: #ffe8cc;
+      color: #a25c36;
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      margin-bottom: 6px;
+    }
+    .card-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .card-number {
+      font-size: 17px;
+      color: #b05a3c;
+      word-break: break-word;
+    }
+    button.copy-btn {
+      background: #f8c89d;
+      border: none;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    button.copy-btn:hover {
+      background: #f1b885;
+    }
+  </style>
+</head>
+<body>
+  <!-- 密码框（初始显示） -->
+  <div class="password-container" id="passwordContainer">
+    <h2 class="password-title">请输入访问密码</h2>
+    <input type="password" class="password-input" id="passwordInput" placeholder="输入密码">
+    <button class="submit-btn" onclick="checkPassword()">确认</button>
+    <div class="error-msg" id="errorMsg">密码错误，请重新输入</div>
+  </div>
+
+  <!-- 内容容器（默认隐藏） -->
+  <div class="content-container" id="contentContainer">
+    <h1>🔐 银行卡备忘录</h1>
+
+    <!-- 银行卡内容（完整保留） -->
+    <div class="bank">
+      <div class="bank-title">工商银行</div>
+      <div class="card-block">
+        <div class="usage">工资卡</div>
+        <div class="card-row">
+          <div class="card-number">6212261102039867885</div>
+          <button class="copy-btn" onclick="copy('6212261102039867885')">复制</button>
+        </div>
+      </div>
+      <div class="card-block">
+        <div class="usage">大额</div>
+        <div class="card-row">
+          <div class="card-number">622202230805838524</div>
+          <button class="copy-btn" onclick="copy('622202230805838524')">复制</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bank">
+      <div class="bank-title">建设银行</div>
+      <div class="card-block">
+        <div class="usage">工资卡</div>
+        <div class="card-row">
+          <div class="card-number">6217002000077037879</div>
+          <button class="copy-btn" onclick="copy('6217002000077037879')">复制</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bank">
+      <div class="bank-title">江苏银行</div>
+      <div class="card-block">
+        <div class="usage">日常</div>
+        <div class="card-row">
+          <div class="card-number">6228760205009406873</div>
+          <button class="copy-btn" onclick="copy('6228760205009406873')">复制</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bank">
+      <div class="bank-title">邮储银行</div>
+      <div class="card-block">
+        <div class="usage">储蓄</div>
+        <div class="card-row">
+          <div class="card-number">6217993000014488798</div>
+          <button class="copy-btn" onclick="copy('6217993000014488798')">复制</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bank">
+      <div class="bank-title">招商银行</div>
+      <div class="card-block">
+        <div class="usage">房水电</div>
+        <div class="card-row">
+          <div class="card-number">6214835228570873</div>
+          <button class="copy-btn" onclick="copy('6214835228570873')">复制</button>
+        </div>
+      </div>
+      <div class="card-block">
+        <div class="usage">储蓄</div>
+        <div class="card-row">
+          <div class="card-number">6214835219386727</div>
+          <button class="copy-btn" onclick="copy('6214835219386727')">复制</button>
+        </div>
+      </div>
+      <div class="card-block">
+        <div class="usage">虚拟卡</div>
+        <div class="card-row">
+          <div class="card-number">6212760078978905</div>
+          <button class="copy-btn" onclick="copy('6212760078978905')">复制</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bank">
+      <div class="bank-title">兴业银行</div>
+      <div class="card-block">
+        <div class="usage">储蓄</div>
+        <div class="card-row">
+          <div class="card-number">622908203025421110</div>
+          <button class="copy-btn" onclick="copy('622908203025421110')">复制</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bank">
+      <div class="bank-title">农业银行</div>
+      <div class="card-block">
+        <div class="usage">还款</div>
+        <div class="card-row">
+          <div class="card-number">6228210259002098373</div>
+          <button class="copy-btn" onclick="copy('6228210259002098373')">复制</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // 最简单的密码验证：直接比对明文
+    function checkPassword() {
+      const input = document.getElementById('passwordInput').value;
+      const correctPassword = '559755'; // 直接写死密码
+      
+      if (input === correctPassword) {
+        // 密码正确，显示内容
+        document.getElementById('passwordContainer').style.display = 'none';
+        document.getElementById('contentContainer').style.display = 'block';
+      } else {
+        // 密码错误，提示
+        document.getElementById('errorMsg').style.display = 'block';
+        setTimeout(() => {
+          document.getElementById('errorMsg').style.display = 'none';
+        }, 3000);
+      }
+    }
+
+    // 复制功能
+    function copy(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        alert("已复制卡号：" + text);
+      });
+    }
+
+    // 支持Enter键提交
+    document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        checkPassword();
+      }
+    });
+  </script>
+</body>
+</html>
